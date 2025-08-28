@@ -1,4 +1,4 @@
-/* Reset e base */
+
 * {
   margin: 0;
   padding: 0;
@@ -6,50 +6,85 @@
 }
 
 body {
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Creepster", cursive, "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   line-height: 1.6;
-  background-color: #f4f4f4;
-  color: #333;
+  background: radial-gradient(circle at center, #1a0000 0%, #000000 100%);
+  color: #e3e3e3;
   padding: 20px;
-  transition: background-color 0.3s, color 0.3s;
+  transition: background 0.6s ease, color 0.6s ease;
+ 
 }
 
 h1 {
+  position: relative;
   text-align: center;
   margin-bottom: 30px;
+  color: #ff0000;
+  font-size: 2.5em;
+  text-shadow: 0 0 10px #ff0000, 0 0 20px #800000;
+  animation: flicker 2s infinite alternate;
+  overflow: hidden;
 }
 
-/* Accordion */
+h1::before,
+h1::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  color: #ff0000;
+  background: transparent;
+}
+
+h1::before {
+  left: 2px;
+  text-shadow: -2px 0 #00ffff;
+  animation: glitch-anim 2s infinite linear alternate-reverse;
+}
+
+h1::after {
+  left: -2px;
+  text-shadow: -2px 0 #ff00ff;
+  animation: glitch-anim2 1.5s infinite linear alternate-reverse;
+}
+
+
 .accordion {
-  background-color: #00897b;
+  background-color: #2b0000;
   color: #fff;
   cursor: pointer;
   padding: 18px;
   width: 100%;
   text-align: left;
-  border: none;
+  border: 2px solid #660000;
   outline: none;
-  font-size: 18px;
-  transition: background-color 0.3s ease;
+  font-size: 20px;
+  transition: all 0.3s ease;
   margin-bottom: 5px;
+  text-shadow: 0 0 5px #ff0000;
 }
 
 .accordion:hover {
-  background-color: #00695c;
+  background-color: #660000;
+  color: #fff;
+  text-shadow: 0 0 15px #ff1a1a;
 }
 
 .painel {
-  background-color: #e0f2f1;
+  background-color: #1a1a1a;
   padding: 0 18px;
   display: none;
   overflow: hidden;
   margin-bottom: 20px;
-  border-left: 4px solid #00897b;
+  border-left: 4px solid #ff0000;
+  box-shadow: inset 0 0 10px #330000;
 }
 
 .criatura {
   padding: 12px 0;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid #440000;
 }
 
 .criatura:last-child {
@@ -58,30 +93,33 @@ h1 {
 
 .criatura-nome {
   font-weight: bold;
-  font-size: 16px;
+  font-size: 18px;
+  color: #ff3333;
+  text-shadow: 0 0 6px #cc0000;
+  animation: pulse 2s infinite;
 }
 
-/* Modo escuro */
+
 body.dark-mode {
-  background-color: #121212;
-  color: #e0e0e0;
+  background: linear-gradient(180deg, #000000, #1a0000, #000000);
+  color: #cfcfcf;
 }
 
 body.dark-mode .accordion {
-  background-color: #333;
-  color: #fff;
+  background-color: #111;
+  border-color: #440000;
 }
 
 body.dark-mode .accordion:hover {
-  background-color: #444;
+  background-color: #330000;
 }
 
 body.dark-mode .painel {
-  background-color: #1e1e1e;
-  border-left-color: #555;
+  background-color: #0d0d0d;
+  border-left-color: #ff0000;
 }
 
-/* Botões extras */
+
 #modo-escuro,
 #voltar-topo {
   position: fixed;
@@ -91,15 +129,18 @@ body.dark-mode .painel {
   border: none;
   cursor: pointer;
   z-index: 1000;
-  background-color: #00897b;
-  color: white;
+  background-color: #440000;
+  color: #fff;
   border-radius: 4px;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s, transform 0.2s;
+  box-shadow: 0 0 10px #ff0000;
+  animation: pulse 2s infinite;
 }
 
 #modo-escuro:hover,
 #voltar-topo:hover {
-  background-color: #00695c;
+  background-color: #ff0000;
+  transform: scale(1.1);
 }
 
 #modo-escuro {
@@ -108,10 +149,10 @@ body.dark-mode .painel {
 
 #voltar-topo {
   bottom: 30px;
-  display: none; /* será exibido com JS */
+  display: none; 
 }
 
-/* Campo de busca */
+
 #busca {
   display: block;
   margin: 0 auto 30px auto;
@@ -119,12 +160,57 @@ body.dark-mode .painel {
   width: 100%;
   max-width: 400px;
   font-size: 16px;
-  border: 2px solid #ccc;
+  border: 2px solid #660000;
   border-radius: 4px;
+  background-color: #0d0d0d;
+  color: #fff;
+  box-shadow: 0 0 10px #330000;
 }
 
-body.dark-mode #busca {
-  background-color: #1e1e1e;
-  border-color: #444;
-  color: #fff;
+#busca:focus {
+  border-color: #ff0000;
+  box-shadow: 0 0 10px #ff1a1a;
 }
+
+
+@keyframes glitch-anim {
+  0% { clip: rect(10px, 9999px, 40px, 0); }
+  20% { clip: rect(50px, 9999px, 80px, 0); }
+  40% { clip: rect(20px, 9999px, 60px, 0); }
+  60% { clip: rect(70px, 9999px, 100px, 0); }
+  80% { clip: rect(30px, 9999px, 70px, 0); }
+  100% { clip: rect(10px, 9999px, 40px, 0); }
+}
+
+@keyframes glitch-anim2 {
+  0% { clip: rect(60px, 9999px, 100px, 0); }
+  20% { clip: rect(30px, 9999px, 60px, 0); }
+  40% { clip: rect(70px, 9999px, 110px, 0); }
+  60% { clip: rect(40px, 9999px, 90px, 0); }
+  80% { clip: rect(20px, 9999px, 50px, 0); }
+  100% { clip: rect(60px, 9999px, 100px, 0); }
+}
+
+@keyframes flicker {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+    opacity: 1;
+    text-shadow: 0 0 10px #ff0000, 0 0 20px #800000;
+  }
+  20%, 24%, 55% {
+    opacity: 0.4;
+    text-shadow: none;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    text-shadow: 0 0 5px #ff1a1a;
+  }
+  50% {
+    text-shadow: 0 0 20px #ff0000, 0 0 40px #800000;
+  }
+  100% {
+    text-shadow: 0 0 5px #ff1a1a;
+  }
+}
+
