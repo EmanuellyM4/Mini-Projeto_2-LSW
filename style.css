@@ -1,0 +1,130 @@
+/* Reset e base */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  background-color: #f4f4f4;
+  color: #333;
+  padding: 20px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+/* Accordion */
+.accordion {
+  background-color: #00897b;
+  color: #fff;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  text-align: left;
+  border: none;
+  outline: none;
+  font-size: 18px;
+  transition: background-color 0.3s ease;
+  margin-bottom: 5px;
+}
+
+.accordion:hover {
+  background-color: #00695c;
+}
+
+.painel {
+  background-color: #e0f2f1;
+  padding: 0 18px;
+  display: none;
+  overflow: hidden;
+  margin-bottom: 20px;
+  border-left: 4px solid #00897b;
+}
+
+.criatura {
+  padding: 12px 0;
+  border-bottom: 1px solid #ccc;
+}
+
+.criatura:last-child {
+  border-bottom: none;
+}
+
+.criatura-nome {
+  font-weight: bold;
+  font-size: 16px;
+}
+
+/* Modo escuro */
+body.dark-mode {
+  background-color: #121212;
+  color: #e0e0e0;
+}
+
+body.dark-mode .accordion {
+  background-color: #333;
+  color: #fff;
+}
+
+body.dark-mode .accordion:hover {
+  background-color: #444;
+}
+
+body.dark-mode .painel {
+  background-color: #1e1e1e;
+  border-left-color: #555;
+}
+
+/* Botões extras */
+#modo-escuro,
+#voltar-topo {
+  position: fixed;
+  right: 20px;
+  padding: 10px 15px;
+  font-size: 14px;
+  border: none;
+  cursor: pointer;
+  z-index: 1000;
+  background-color: #00897b;
+  color: white;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+#modo-escuro:hover,
+#voltar-topo:hover {
+  background-color: #00695c;
+}
+
+#modo-escuro {
+  bottom: 80px;
+}
+
+#voltar-topo {
+  bottom: 30px;
+  display: none; /* será exibido com JS */
+}
+
+/* Campo de busca */
+#busca {
+  display: block;
+  margin: 0 auto 30px auto;
+  padding: 10px;
+  width: 100%;
+  max-width: 400px;
+  font-size: 16px;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+}
+
+body.dark-mode #busca {
+  background-color: #1e1e1e;
+  border-color: #444;
+  color: #fff;
+}
