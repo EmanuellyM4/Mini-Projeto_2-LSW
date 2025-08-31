@@ -1,19 +1,50 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // 1. ACCORDION
-  const accordions = document.querySelectorAll(".accordion");
-  accordions.forEach(btn => {
-    btn.addEventListener("click", function () {
-      this.classList.toggle("active");
-      const panel = this.nextElementSibling;
-      if (panel.style.display === "block") {
-        panel.style.display = "none";
-      } else {
-        panel.style.display = "block";
-      }
-    });
-  });
+ const API_URL = "http://localhost:3000/criaturas";
 
-  // 2. BOTÃO VOLTAR AO TOPO
+async function carregarCriaturas() {
+  try {
+    const resp = await fetch(API_URL);
+    const criaturas = await resp.json();
+    renderizarCriaturas(criaturas);
+  } catch (erro) {
+    console.error("Erro ao buscar criaturas:", erro);
+  }
+}
+
+function renderizarCriaturas(lista) {
+  const container = document.getElementById("lista-criaturas");
+  container.innerHTML = "";
+  lista.forEach(c => {
+    const div = document.createElement("div");
+    div.classList.add("criatura");
+    div.innerHTML = `
+      <span class="criatura-nome">${c.nome}</span>
+      <img src="${c.imagem}" width="30%" alt="${c.nome}">
+      <p>${c.descricao}</p>
+      <button onclick="deletarCriatura(${c.id})">🗑️ Deletar</button>
+    `;
+    container.appendChild(div);
+  });
+}
+
+async function adicionarCriatura(nova) {
+  await fetch(API_URL, {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify(nova)
+  });
+  carregarCriaturas();
+}
+
+async function deletarCriatura(id) {
+  await fetch(`${API_URL}/${id}`, { method: "DELETE" });
+  carregarCriaturas();
+}
+
+document.addEventListener("DOMContentLoaded", carregarCriaturas);
+
+
+  
   const btnTopo = document.createElement("button");
   btnTopo.id = "btnTopo";
   btnTopo.innerText = "↑ Topo";
@@ -41,7 +72,7 @@ document.addEventListener("DOMContentLoaded", () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   });
 
-  // 3. BUSCA POR NOME
+ 
   const searchBox = document.createElement("input");
   searchBox.type = "text";
   searchBox.placeholder = "🔍 Buscar criatura...";
@@ -71,16 +102,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // 4. CONTADOR DE CRIATURAS POR REGIÃO
-  const regioes = document.querySelectorAll(".painel");
-  regioes.forEach(painel => {
-    const criaturas = painel.querySelectorAll(".criatura");
-    const count = criaturas.length;
-    const titulo = painel.previousElementSibling;
-    titulo.innerText += ` (${count})`;
-  });
+ 
 
-  // 5. MODO ESCURO
+ 
   const btnDarkMode = document.createElement("button");
   btnDarkMode.innerText = "🌙 Alternar Modo Escuro";
   btnDarkMode.id = "btnDarkMode";
@@ -104,3 +128,4 @@ document.addEventListener("DOMContentLoaded", () => {
       : "🌙 Alternar Modo Escuro";
   });
 });
+
