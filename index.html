@@ -8,17 +8,24 @@
 </head>
 <body>
 
-  
   <img src="banner.jpg" width="100%" alt="Banner">
 
- <h1>Brasil: Criaturas Místicas e Sobrenaturais</h1>
+  <h1>Brasil: Criaturas Místicas e Sobrenaturais</h1>
 
-<input type="text" id="busca" placeholder="🔍 Buscar criatura...">
-<button id="modo-escuro">🌙 Alternar Modo Escuro</button>
+  <input type="text" id="busca" placeholder="🔍 Buscar criatura...">
+  <button id="modo-escuro">🌙 Alternar Modo Escuro</button>
 
-<div id="lista-criaturas"></div>
+  <div id="lista-criaturas"></div>
 
-  
+  <h2>➕ Adicionar Criatura</h2>
+  <form id="form-criatura">
+    <input type="text" id="nome" placeholder="Nome" required>
+    <input type="text" id="imagem" placeholder="URL da imagem" required>
+    <input type="text" id="regiao" placeholder="Região" required>
+    <textarea id="descricao" placeholder="Descrição" required></textarea>
+    <button type="submit">Adicionar</button>
+  </form>
+
   <button id="voltar-topo">↑ Topo</button>
 
   <h6>Por: Emanuelly de Oliveira B. Moura</h6>
@@ -26,7 +33,5 @@
   <script src="script.js"></script>
 </body>
 </html>
-
-
 
 
