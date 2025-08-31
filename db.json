@@ -1,0 +1,39 @@
+{
+  "criaturas": [
+    {
+      "id": 1,
+      "nome": "Matinta Perera",
+      "descricao": "Descrita como sendo uma bruxa velha com a habilidade de se tornar um pássaro, o Rasga Mortalha...",
+      "imagem": "matinta.jpg",
+      "regiao": "Norte"
+    },
+    {
+      "id": 2,
+      "nome": "Boto-cor-de-rosa",
+      "descricao": "Segundo a lenda, o boto-cor-de-rosa vive no rio Amazonas e se transforma em um rapaz elegante durante as festas.",
+      "imagem": "boto.jpg",
+      "regiao": "Norte"
+    },
+    {
+      "id": 3,
+      "nome": "Caipora",
+      "descricao": "A Caipora é uma figura do folclore brasileiro, considerada a protetora dos animais e guardiã das florestas.",
+      "imagem": "caipora.jpg",
+      "regiao": "Norte"
+    },
+    {
+      "id": 4,
+      "nome": "Saci-pererê",
+      "descricao": "Descrito como um menino negro de uma perna só, travesso e que fuma cachimbo, famoso por suas travessuras.",
+      "imagem": "saci.jpg",
+      "regiao": "Sul"
+    },
+    {
+      "id": 5,
+      "nome": "Cuca",
+      "descricao": "A Cuca é uma bruxa com corpo de jacaré e cabelos amarelos, conhecida por raptar crianças desobedientes.",
+      "imagem": "cuca.jpg",
+      "regiao": "Sul"
+    }
+  ]
+}
