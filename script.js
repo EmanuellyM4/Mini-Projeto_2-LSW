@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const API_URL = "http://localhost:3000/criaturas";
+  const API_URL = "https://my-json-server.typicode.com/EmanuellyM4/criaturas-api/criaturas";
 
   
   async function carregarCriaturas() {
@@ -95,4 +95,5 @@ document.addEventListener("DOMContentLoaded", () => {
 
   carregarCriaturas();
 });
+
 
