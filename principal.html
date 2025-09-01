@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brasil: Criaturas Místicas</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      background: radial-gradient(circle at center, #1a0000 0%, #000000 100%);
+      color: #e3e3e3;
+      padding: 20px;
+      transition: background 0.6s ease, color 0.6s ease;
+    }
+
+    h1 {
+      position: relative;
+      text-align: center;
+      margin-bottom: 30px;
+      color: #ff0000;
+      font-size: 2.5em;
+      text-shadow: 0 0 10px #ff0000, 0 0 20px #800000;
+      animation: flicker 2s infinite alternate;
+      overflow: hidden;
+    }
+
+    h1::before,
+    h1::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      overflow: hidden;
+      color: #ff0000;
+      background: transparent;
+    }
+
+    h1::before {
+      left: 2px;
+      text-shadow: -2px 0 #00ffff;
+      animation: glitch-anim 2s infinite linear alternate-reverse;
+    }
+
+    h1::after {
+      left: -2px;
+      text-shadow: -2px 0 #ff00ff;
+      animation: glitch-anim2 1.5s infinite linear alternate-reverse;
+    }
+
+    .accordion {
+      background-color: #2b0000;
+      color: #fff;
+      cursor: pointer;
+      padding: 18px;
+      width: 100%;
+      text-align: left;
+      border: 2px solid #660000;
+      outline: none;
+      font-size: 20px;
+      transition: all 0.3s ease;
+      margin-bottom: 5px;
+      text-shadow: 0 0 5px #ff0000;
+    }
+
+    .accordion:hover {
+      background-color: #660000;
+      color: #fff;
+      text-shadow: 0 0 15px #ff1a1a;
+    }
+
+    .painel {
+      background-color: #1a1a1a;
+      padding: 0 18px;
+      display: none;
+      overflow: hidden;
+      margin-bottom: 20px;
+      border-left: 4px solid #ff0000;
+      box-shadow: inset 0 0 10px #330000;
+    }
+
+    .criatura {
+      padding: 12px 0;
+      border-bottom: 1px solid #440000;
+      position: relative;
+    }
+
+    .criatura:last-child {
+      border-bottom: none;
+    }
+
+    .criatura-nome {
+      font-weight: bold;
+      font-size: 18px;
+      color: #ff3333;
+      text-shadow: 0 0 6px #cc0000;
+      animation: pulse 2s infinite;
+    }
+
+    .criatura-botoes {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      display: flex;
+      gap: 5px;
+    }
+
+    .btn-editar, .btn-excluir {
+      padding: 5px 10px;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    .btn-editar {
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    .btn-excluir {
+      background-color: #f44336;
+      color: white;
+    }
+
+    body.dark-mode {
+      background: linear-gradient(180deg, #000000, #1a0000, #000000);
+      color: #cfcfcf;
+    }
+
+    body.dark-mode .accordion {
+      background-color: #111;
+      border-color: #440000;
+    }
+
+    body.dark-mode .accordion:hover {
+      background-color: #330000;
+    }
+
+    body.dark-mode .painel {
+      background-color: #0d0d0d;
+      border-left-color: #ff0000;
+    }
+
+    #modo-escuro,
+    #voltar-topo {
+      position: fixed;
+      right: 20px;
+      padding: 10px 15px;
+      font-size: 14px;
+      border: none;
+      cursor: pointer;
+      z-index: 1000;
+      background-color: #440000;
+      color: #fff;
+      border-radius: 4px;
+      transition: background-color 0.3s, transform 0.2s;
+      box-shadow: 0 0 10px #ff0000;
+      animation: pulse 2s infinite;
+    }
+
+    #modo-escuro:hover,
+    #voltar-topo:hover {
+      background-color: #ff0000;
+      transform: scale(1.1);
+    }
+
+    #modo-escuro {
+      bottom: 80px;
+    }
+
+    #voltar-topo {
+      bottom: 30px;
+      display: none;
+    }
+
+    #busca {
+      display: block;
+      margin: 0 auto 30px auto;
+      padding: 10px;
+      width: 100%;
+      max-width: 400px;
+      font-size: 16px;
+      border: 2px solid #660000;
+      border-radius: 4px;
+      background-color: #0d0d0d;
+      color: #fff;
+      box-shadow: 0 0 10px #330000;
+    }
+
+    #busca:focus {
+      border-color: #ff0000;
+      box-shadow: 0 0 10px #ff1a1a;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 20px;
+      color: #ff3333;
+      font-size: 18px;
+    }
+
+    .error {
+      text-align: center;
+      padding: 20px;
+      color: #ff0000;
+      background-color: #330000;
+      margin: 10px 0;
+      border-radius: 5px;
+    }
+
+    .form-criatura {
+      background-color: #1a1a1a;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 5px;
+      border-left: 4px solid #ff0000;
+    }
+
+    .form-criatura h3 {
+      color: #ff3333;
+      margin-bottom: 15px;
+    }
+
+    .form-criatura input,
+    .form-criatura textarea,
+    .form-criatura select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #660000;
+      border-radius: 4px;
+      background-color: #0d0d0d;
+      color: #fff;
+    }
+
+    .form-criatura button {
+      padding: 10px 15px;
+      background-color: #440000;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .form-criatura button:hover {
+      background-color: #ff0000;
+    }
+
+    @keyframes glitch-anim {
+      0% { clip: rect(10px, 9999px, 40px, 0); }
+      20% { clip: rect(50px, 9999px, 80px, 0); }
+      40% { clip: rect(20px, 9999px, 60px, 0); }
+      60% { clip: rect(70px, 9999px, 100px, 0); }
+      80% { clip: rect(30px, 9999px, 70px, 0); }
+      100% { clip: rect(10px, 9999px, 40px, 0); }
+    }
+
+    @keyframes glitch-anim2 {
+      0% { clip: rect(60px, 9999px, 100px, 0); }
+      20% { clip: rect(30px, 9999px, 60px, 0); }
+      40% { clip: rect(70px, 9999px, 110px, 0); }
+      60% { clip: rect(40px, 9999px, 90px, 0); }
+      80% { clip: rect(20px, 9999px, 50px, 0); }
+      100% { clip: rect(60px, 9999px, 100px, 0); }
+    }
+
+    @keyframes flicker {
+      0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+        opacity: 1;
+        text-shadow: 0 0 10px #ff0000, 0 0 20px #800000;
+      }
+      20%, 24%, 55% {
+        opacity: 0.4;
+        text-shadow: none;
+      }
+    }
+
+    @keyframes pulse {
+      0% {
+        text-shadow: 0 0 5px #ff1a1a;
+      }
+      50% {
+        text-shadow: 0 0 20px #ff0000, 0 0 40px #800000;
+      }
+      100% {
+        text-shadow: 0 0 5px #ff1a1a;
+      }
+    }
+  </style>
+</head>
+<body>
+  <img src="banner.jpg" width="100%" alt="Banner" onerror="this.style.display='none'">
+
+  <h1 data-text="Brasil: Criaturas Místicas e Sobrenaturais">Brasil: Criaturas Místicas e Sobrenaturais</h1>
+
+  <input type="text" id="busca" placeholder="🔍 Buscar criatura...">
+  <button id="modo-escuro">🌙 Alternar Modo Escuro</button>
+
+  <div id="Intro">
+    <p>As criaturas mitológicas são seres criados por diversas culturas, seu propósito seria explicar a origem do mundo, bem como eventos naturais dos quais não se tinha entendimento, ou para passar lições importantes para a sociedade. Sejam monstros ou personagens da mitologia grega todos costumam ter histórias curiosas. Trata-se de um assunto amplo e intrigante, que atrai a curiosidade e o interesse de muita gente, principalmente devido ao sucesso de séries como Supernatural (2005-2020), Teen Wolf(2011-2017), e outros.</p>
+    <p> Falando nisso, você sabia que o folclore brasileiro conta com diversas criaturas igualmente interessantes?Cada região tem suas próprias lendas, algumas até se assemelham, mas cada uma conta com sua própria história de origem.Assim sendo, que tal falarmos mais a respeito e nos aprofundar em suas histórias e origens?</p>
+  </div>
+
+  <div class="form-criatura">
+    <h3 id="form-titulo">Adicionar Nova Criatura</h3>
+    <form id="criatura-form">
+      <input type="hidden" id="criatura-id">
+      <input type="text" id="criatura-nome" placeholder="Nome da criatura" required>
+      <textarea id="criatura-descricao" placeholder="Descrição" rows="4" required></textarea>
+      <input type="text" id="criatura-imagem" placeholder="URL da imagem">
+      <select id="criatura-regiao" required>
+        <option value="">Selecione a região</option>
+        <option value="Norte">Norte</option>
+        <option value="Nordeste">Nordeste</option>
+        <option value="Centro-Oeste">Centro-Oeste</option>
+        <option value="Sudeste">Sudeste</option>
+        <option value="Sul">Sul</option>
+      </select>
+      <button type="submit" id="btn-salvar">Salvar Criatura</button>
+      <button type="button" id="btn-cancelar" style="display: none;">Cancelar</button>
+    </form>
+  </div>
+
+  <div id="criaturas-container">
+    <div class="loading">Carregando criaturas...</div>
+  </div>
+
+  <button id="voltar-topo">↑ Topo</button>
+
+  <h6>Por: Emanuelly de Oliveira B. Moura</h6>
+
+  <script>
+    
+    const API_URL = 'https://68b59fa3e5dc090291afae1e.mockapi.io';
+
+    
+    const criaturasContainer = document.getElementById('criaturas-container');
+    const buscaInput = document.getElementById('busca');
+    const formCriatura = document.getElementById('criatura-form');
+    const btnCancelar = document.getElementById('btn-cancelar');
+    const formTitulo = document.getElementById('form-titulo');
+
+    
+    let criaturas = [];
+    let editandoId = null;
+
+    
+    document.addEventListener('DOMContentLoaded', () => {
+      inicializarAccordions();
+      inicializarModoEscuro();
+      inicializarVoltarTopo();
+      inicializarBusca();
+      carregarCriaturas();
+      configurarFormulario();
+    });
+
+    
+    function inicializarAccordions() {
+      
+    }
+
+    
+    function inicializarModoEscuro() {
+      const btnModoEscuro = document.getElementById('modo-escuro');
+      btnModoEscuro.addEventListener('click', () => {
+        document.body.classList.toggle('dark-mode');
+        btnModoEscuro.innerText = document.body.classList.contains('dark-mode')
+          ? '☀️ Alternar Modo Claro'
+          : '🌙 Alternar Modo Escuro';
+      });
+    }
+
+    
+    function inicializarVoltarTopo() {
+      const btnTopo = document.getElementById('voltar-topo');
+      window.addEventListener('scroll', () => {
+        btnTopo.style.display = window.scrollY > 300 ? 'block' : 'none';
+      });
+
+      btnTopo.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    }
+
+    
+    function inicializarBusca() {
+      buscaInput.addEventListener('input', () => {
+        const termo = buscaInput.value.toLowerCase();
+        const paineis = document.querySelectorAll('.painel');
+        
+        paineis.forEach(painel => {
+          const criaturasNoPainel = painel.querySelectorAll('.criatura');
+          let encontrou = false;
+          
+          criaturasNoPainel.forEach(criatura => {
+            const nome = criatura.querySelector('.criatura-nome').innerText.toLowerCase();
+            if (nome.includes(termo)) {
+              criatura.style.display = 'block';
+              encontrou = true;
+            } else {
+              criatura.style.display = 'none';
+            }
+          });
+          
+          
+          painel.style.display = encontrou ? 'block' : 'none';
+          if (encontrou) {
+            painel.previousElementSibling.style.display = 'block';
+          }
+        });
+      });
+    }
+
+    
+    function configurarFormulario() {
+      formCriatura.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const criatura = {
+          nome: document.getElementById('criatura-nome').value,
+          descricao: document.getElementById('criatura-descricao').value,
+          imagem: document.getElementById('criatura-imagem').value,
+          regiao: document.getElementById('criatura-regiao').value
+        };
+        
+        try {
+          if (editandoId) {
+            
+            await atualizarCriatura(editandoId, criatura);
+          } else {
+            
+            await adicionarCriatura(criatura);
+          }
+          
+          
+          formCriatura.reset();
+          editandoId = null;
+          btnCancelar.style.display = 'none';
+          formTitulo.innerText = 'Adicionar Nova Criatura';
+          await carregarCriaturas();
+        } catch (error) {
+          mostrarErro('Erro ao salvar criatura: ' + error.message);
+        }
+      });
+      
+      btnCancelar.addEventListener('click', () => {
+        formCriatura.reset();
+        editandoId = null;
+        btnCancelar.style.display = 'none';
+        formTitulo.innerText = 'Adicionar Nova Criatura';
+      });
+    }
+
+    
+    async function carregarCriaturas() {
+      try {
+        criaturasContainer.innerHTML = '<div class="loading">Carregando criaturas...</div>';
+        
+        const response = await fetch(`${API_URL}/criaturas`);
+        if (!response.ok) {
+          throw new Error('Erro ao carregar dados da API');
+        }
+        
+        criaturas = await response.json();
+        exibirCriaturas(criaturas);
+      } catch (error) {
+        mostrarErro('Erro ao carregar criaturas: ' + error.message);
+      }
+    }
+
+    
+    function exibirCriaturas(criaturas) {
+      
+      const criaturasPorRegiao = {};
+      criaturas.forEach(criatura => {
+        if (!criaturasPorRegiao[criatura.regiao]) {
+          criaturasPorRegiao[criatura.regiao] = [];
+        }
+        criaturasPorRegiao[criatura.regiao].push(criatura);
+      });
+      
+      
+      let html = '';
+      const regioes = ['Norte', 'Nordeste', 'Centro-Oeste', 'Sudeste', 'Sul'];
+      
+      regioes.forEach(regiao => {
+        if (criaturasPorRegiao[regiao] && criaturasPorRegiao[regiao].length > 0) {
+          html += `
+            <button class="accordion">Região ${regiao} (${criaturasPorRegiao[regiao].length})</button>
+            <div class="painel">
+          `;
+          
+          criaturasPorRegiao[regiao].forEach(criatura => {
+            html += `
+              <div class="criatura" data-id="${criatura.id}">
+                <div class="criatura-botoes">
+                  <button class="btn-editar" data-id="${criatura.id}">Editar</button>
+                  <button class="btn-excluir" data-id="${criatura.id}">Excluir</button>
+                </div>
+                <span class="criatura-nome">${criatura.nome}</span>
+                <img src="${criatura.imagem || 'placeholder.jpg'}" width="30%" alt="${criatura.nome}" onerror="this.style.display='none'">
+                <p>${criatura.descricao}</p>
+              </div>
+            `;
+          });
+          
+          html += `</div>`;
+        }
+      });
+      
+      criaturasContainer.innerHTML = html;
+      
+      
+      const accordions = document.querySelectorAll('.accordion');
+      accordions.forEach(btn => {
+        btn.addEventListener('click', function() {
+          this.classList.toggle('active');
+          const panel = this.nextElementSibling;
+          if (panel.style.display === 'block') {
+            panel.style.display = 'none';
+          } else {
+            panel.style.display = 'block';
+          }
+        });
+      });
+      
+      
+      document.querySelectorAll('.btn-editar').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const id = e.target.getAttribute('data-id');
+          editarCriatura(id);
+        });
+      });
+      
+      document.querySelectorAll('.btn-excluir').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const id = e.target.getAttribute('data-id');
+          excluirCriatura(id);
+        });
+      });
+    }
+
+    
+    async function adicionarCriatura(criatura) {
+      const response = await fetch(`${API_URL}/criaturas`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(criatura)
+      });
+      
+      if (!response.ok) {
+        throw new Error('Erro ao adicionar criatura');
+      }
+    }
+
+    
+    async function atualizarCriatura(id, criatura) {
+      const response = await fetch(`${API_URL}/criaturas/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(criatura)
+      });
+      
+      if (!response.ok) {
+        throw new Error('Erro ao atualizar criatura');
+      }
+    }
+
+    
+    async function excluirCriatura(id) {
+      if (!confirm('Tem certeza que deseja excluir esta criatura?')) {
+        return;
+      }
+      
+      try {
+        const response = await fetch(`${API_URL}/criaturas/${id}`, {
+          method: 'DELETE'
+        });
+        
+        if (!response.ok) {
+          throw new Error('Erro ao excluir criatura');
+        }
+        
+        await carregarCriaturas();
+      } catch (error) {
+        mostrarErro('Erro ao excluir criatura: ' + error.message);
+      }
+    }
+
+    
+    function editarCriatura(id) {
+      const criatura = criaturas.find(c => c.id == id);
+      if (!criatura) return;
+      
+      document.getElementById('criatura-id').value = criatura.id;
+      document.getElementById('criatura-nome').value = criatura.nome;
+      document.getElementById('criatura-descricao').value = criatura.descricao;
+      document.getElementById('criatura-imagem').value = criatura.imagem || '';
+      document.getElementById('criatura-regiao').value = criatura.regiao;
+      
+      editandoId = id;
+      btnCancelar.style.display = 'inline-block';
+      formTitulo.innerText = 'Editar Criatura';
+      
+      
+      formCriatura.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    
+    function mostrarErro(mensagem) {
+      criaturasContainer.innerHTML = `<div class="error">${mensagem}</div>`;
+    }
+  </script>
+</body>
+</html>
